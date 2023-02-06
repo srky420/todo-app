@@ -10,7 +10,7 @@ function App() {
     console.log("I am onDelete of", todo);
   }
   
-  // Todo JSON
+  // Todos in JSON
   let todos = [
     {
       id: 1,
