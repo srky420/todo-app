@@ -1,9 +1,10 @@
 import React from 'react'
 import { useState } from 'react'
 
+
 export default function AddTodo(props) {
     // State vars for form input
-    const [name, setTitle] = useState("");
+    const [name, setName] = useState("");
     const [desc, setDesc] = useState("");
 
     const submit = (e) => {
@@ -11,8 +12,11 @@ export default function AddTodo(props) {
         if (!name || !desc) {
             alert("Title of Desc cannot be empty");
         }
-
+        else {
         props.addTodo(name , desc);
+        setName("");
+        setDesc("");
+        }
     }
 
     return (
@@ -22,7 +26,7 @@ export default function AddTodo(props) {
             <form>
                 <div className="mb-3">
                     <label className="form-label">Todo Title</label>
-                    <input type="text" value={name} onChange={ (e) => {setTitle(e.target.value)}} className="form-control" placeholder="Title" id="title"/>
+                    <input type="text" value={name} onChange={ (e) => {setName(e.target.value)}} className="form-control" placeholder="Title" id="title"/>
                 </div>
                 <div className="mb-3">
                     <label className="form-label">Todo Description</label>

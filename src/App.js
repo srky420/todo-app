@@ -3,40 +3,40 @@ import Header from './MyComponents/Header';
 import Todos from './MyComponents/Todos';
 import Footer from './MyComponents/Footer';
 import AddTodo from './MyComponents/AddTodo';
-import { useState } from 'react';
+import About from './MyComponents/About';
+import { useEffect, useState } from 'react';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route
+} from "react-router-dom";
+
 
 function App() {
+
+  let initTodos;
+  if (localStorage.getItem("todos") == null) {
+    initTodos = [];
+  }
+  else {
+    initTodos = JSON.parse(localStorage.getItem("todos"));
+  }
 
   const onDelete = (todo) => {
     console.log("I am onDelete of", todo);
     setTodos(todos.filter((e) => {
       return e!==todo
     }));
+    localStorage.setItem("todos", JSON.stringify(todos));
   }
-
-  // Todos in JSON
-
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      name: "Do dishes",
-      desc: "Do the dinner dishes"
-    },
-    {
-      id: 2,
-      name: "Do homework",
-      desc: "Do tomorrow's homework"
-    },
-    {
-      id: 3,
-      name: "Do meditate",
-      desc: "Do a meditation session using meditate app"
-    }
-  ]);
 
   const addTodo = (name, desc) => {
     console.log("I will add this todo", name, desc)
-    let id = todos[todos.length - 1].id + 1;
+    let id = 1;
+
+    if (todos.length > 0) {
+      id = todos[todos.length - 1].id + 1;
+    }
 
     let myTodo = {
       id: id,
@@ -45,15 +45,37 @@ function App() {
     }
     setTodos([...todos, myTodo]);
     console.log(myTodo)
+
   }
+
+    // Todos in JSON
+
+    const [todos, setTodos] = useState(initTodos);
+    useEffect(() => {
+      localStorage.setItem("todos", JSON.stringify(todos))
+    }, [todos]);
 
 
   return (
     <>
-      <Header title="Todo App" searchBar={ false }/>
-      <AddTodo addTodo={addTodo}/>
-      <Todos todos={ todos } onDelete={ onDelete }/>
-      <Footer/>
+      <Router>
+        <Header title="Todo App" searchBar={ false }/>
+        
+        <Routes>
+          <Route exact path="/" element={ 
+            <>
+              <AddTodo addTodo={addTodo}/>
+              <Todos todos={ todos } onDelete={ onDelete }/> 
+            </>
+          }>
+          </Route>
+          
+          <Route exact path="/about" element={ <About/> }>
+          </Route>
+        </Routes>
+
+        <Footer/>
+      </Router>
     </>
   );
 }
