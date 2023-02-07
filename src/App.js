@@ -15,7 +15,7 @@ import {
 function App() {
 
   let initTodos;
-  if (localStorage.getItem("todos") == null) {
+  if (localStorage.getItem("todos") === null) {
     initTodos = [];
   }
   else {
@@ -31,7 +31,6 @@ function App() {
   }
 
   const addTodo = (name, desc) => {
-    console.log("I will add this todo", name, desc)
     let id = 1;
 
     if (todos.length > 0) {
@@ -44,7 +43,6 @@ function App() {
       desc: desc
     }
     setTodos([...todos, myTodo]);
-    console.log(myTodo)
 
   }
 
